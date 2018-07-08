@@ -51,40 +51,14 @@ void SampleObject::Load(StandardFileSystem fs, const char* filename) {
 	else
 	{
 		std::string dataString(destBuffer);
-
-		std::istringstream is(dataString);
-		std::string part;
-		while (getline(is, part, '\n'))
-		{
-			if (part == "true") {
-				this->m_MyBoolVariable = true;
-			}
-			else if (count == 4) {
-				std::istringstream ia(part);
-				std::string element;
-				int i = 0;
-				while (getline(ia, element, ' ')) {
-					m_MyArray[i] = std::stoi(element);
-					i++;
-				}
-			}
-			else
-			{
-				switch (count) 
-				{
-					case 0: this->m_MyIntVariable = std::stoi(part);
-					case 2: this->m_MyFloatVariable = std::stoi(part);
-					case 3: this->m_MyDoubleVariable = std::stoi(part);
-				}
-			}
-			count++;
-		}
+		this->ObjectParser(dataString);
 	}
 
 	// Close the file
 	delete openedFile;
 }
-void SampleObject::Save(StandardFileSystem fs, const char* filename) {
+void SampleObject::Save(StandardFileSystem fs, const char* filename) 
+{
 	const char* newline = "\n";
 	const char* space = " ";
 
@@ -176,5 +150,38 @@ void SampleObject::Save(StandardFileSystem fs, const char* filename) {
 
 	delete createdFile;
 
+}
+
+void SampleObject::ObjectParser(std::string variables) 
+{
+	int count = 0;
+
+	std::istringstream is(variables);
+	std::string part;
+	while (getline(is, part, '\n'))
+	{
+		if (part == "true") {
+			this->m_MyBoolVariable = true;
+		}
+		else if (count == 4) {
+			std::istringstream ia(part);
+			std::string element;
+			int i = 0;
+			while (getline(ia, element, ' ')) {
+				m_MyArray[i] = std::stoi(element);
+				i++;
+			}
+		}
+		else
+		{
+			switch (count)
+			{
+			case 0: this->m_MyIntVariable = std::stoi(part);
+			case 2: this->m_MyFloatVariable = std::stoi(part);
+			case 3: this->m_MyDoubleVariable = std::stoi(part);
+			}
+		}
+		count++;
+	}
 }
 // END: Custom Code 

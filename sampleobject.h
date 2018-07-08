@@ -51,6 +51,7 @@ public:
 	void myCustomFunction();
 	void Load(StandardFileSystem fs, const char * filename);
 	void Save(StandardFileSystem fs, const char * filename);
+	void ObjectParser(std::string variables);
 // END: Custom Code
 
 };

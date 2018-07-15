@@ -32,11 +32,11 @@ void SampleObject::myCustomFunction()
 {
 	std::cout << "Custom Function!" << std::endl;
 }
-void SampleObject::Load(StandardFileSystem fs, const char* filename) {
+void SampleObject::Load(StandardFileSystem fs, const char* filename) { //Loading Function
 	int count = 0;
 	this->m_MyBoolVariable = false;
 	
-	IFile* openedFile = fs.openFile(filename);
+	IFile* openedFile = fs.openFile(filename); //Opening the file
 	if (!openedFile)
 	{
 		std::cout << "Failed to open file" << std::endl;
@@ -50,14 +50,14 @@ void SampleObject::Load(StandardFileSystem fs, const char* filename) {
 	}
 	else
 	{
-		std::string dataString(destBuffer);
-		this->ObjectParser(dataString);
+		std::string dataString(destBuffer); //Converting the obtained data to string then pass to object parser
+		this->ObjectParser(dataString); //Object parser function call
 	}
 
 	// Close the file
 	delete openedFile;
 }
-void SampleObject::Save(StandardFileSystem fs, const char* filename) 
+void SampleObject::Save(StandardFileSystem fs, const char* filename) //Saving Function
 {
 	const char* newline = "\n";
 	const char* space = " ";
@@ -67,14 +67,14 @@ void SampleObject::Save(StandardFileSystem fs, const char* filename)
 		fs.deleteFile(filename);
 	}
 
-	IFile* createdFile = fs.createFile(filename);
+	IFile* createdFile = fs.createFile(filename); //Creating the file
 	if (!createdFile)
 	{
 		std::cout << "Failed to create a file" << std::endl;
 		return;
 	}
 
-	std::string myInt = std::to_string(this->m_MyIntVariable);
+	std::string myInt = std::to_string(this->m_MyIntVariable); //Converting variables to string then to const char for write use
 	const char* myIntChar = myInt.c_str();
 	std::string myFloat = std::to_string(this->m_MyFloatVariable);
 	const char* myFloatChar = myFloat.c_str();
@@ -88,7 +88,7 @@ void SampleObject::Save(StandardFileSystem fs, const char* filename)
 		 myBool = "false\n";
 	}
 
-	if (!createdFile->write(myIntChar, strlen(myIntChar)))
+	if (!createdFile->write(myIntChar, strlen(myIntChar))) //Start of writing to file, each data is separated by a newline
 	{
 		std::cout << "Failed to write to file" << std::endl;
 	}
@@ -123,7 +123,7 @@ void SampleObject::Save(StandardFileSystem fs, const char* filename)
 		std::cout << "Failed to write to file" << std::endl;
 	}
 
-	for (int count = 0; count < (sizeof(this->m_MyArray) / sizeof(*this->m_MyArray)); count++) {
+	for (int count = 0; count < (sizeof(this->m_MyArray) / sizeof(*this->m_MyArray)); count++) { //Each element separated by commas
 		std::string myArray = std::to_string(this->m_MyArray[count]);
 		const char* myArrayChar = myArray.c_str();
 		if (count+1 == (sizeof(this->m_MyArray) / sizeof(*this->m_MyArray))) 
@@ -152,13 +152,13 @@ void SampleObject::Save(StandardFileSystem fs, const char* filename)
 
 }
 
-void SampleObject::ObjectParser(std::string variables) 
+void SampleObject::ObjectParser(std::string variables) //Object Parser
 {
 	int count = 0;
 
 	std::istringstream is(variables);
 	std::string part;
-	while (getline(is, part, '\n'))
+	while (getline(is, part, '\n')) //Tokenizing the string to obtain each variable and assigning them to variables, newline being the limiter
 	{
 		if (part == "true") {
 			this->m_MyBoolVariable = true;
